@@ -29,7 +29,6 @@ class Post(db.Model):
     id: Mapped[int] = mapped_column(sa.Integer, primary_key=True) 
     title: Mapped[str] = mapped_column(sa.String, nullable=False)
     body: Mapped[str] = mapped_column(sa.String, nullable=False)
-    created: Mapped[datetime] = mapped_column(sa.DateTime, default=sa.func.now())
     author_id: Mapped[int] = mapped_column(sa.ForeignKey('user.id'))
 
 
@@ -67,7 +66,10 @@ def create_app(test_config=None):
     db.init_app(app)
 
     # register blueprints
-    from src.controllers import user 
+    from src.controllers import user
+    from src.controllers import post
     
     app.register_blueprint(user.app)
+    app.register_blueprint(post.app)
+
     return app
